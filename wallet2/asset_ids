@@ -1,0 +1,70 @@
+test1
+pubkey:- 4yvdoTUaN7nkPHyii3hka3mPpvb4GcSxyY4maeZmpcG2
+asset_id 1: 18b6b1c0afb09445ced7ce7741af08888cb6e32aeccec504cb23a844bfdaa6d0
+asset_id 2: 12a84ed73b4ec7f94a84a3dd242e19d38d5e4dbf4797478bd6e4530f994fa212
+asset_id 3: 8ac465f1558c0c4440aee25168d055d355707e53bb5179a13dba3ddbdaadcfa4
+
+updated_Asset_id :c887bd203cd4c46656b2fd427d7b5e5a097490cda32f06aba7e79602a985f8c4 for asset3
+decrypt_key: F6cNkJUYVYdTosk9krrFg5
+
+test2:
+pubkey:- HsixRAm9qzeL5JXZdWkzkcEhRUc1LcppdrXR3v3vhrWB
+asset_id 1:  a7db1feb48a0671240eec2a3c754cf5d585ed79ddcef8447577ffe0f60d0f118
+
+
+
+nu1
+pubkey:- C4pj1EmadpVGqu4gnQ22KVbWUzXXFgWkNxb4Zyj3NT3E
+asset_id1: 47b87f3c6e5bef51f09acfc77db6ce115b990a9a0ee32dcbbfdb458add539acd 
+decrypt_key: NzmQcajUgaLYoREtLTh5cR
+updated_id:- 71707cd160cbee04b2f8a2e60a754ebbb6844f4138c8d55a04fb164ddbbd078c
+
+nu2
+pubkey:- 4kgSWUfWtrjh7HSsAokFxSddLGxqj9h9vvE582BCJLAU
+asset_id1: 66c39f93e864df43e5262fc89d57f80ec7b726288d35e485c19e4f91d13f7d92
+updated_key: 343beae5eacbf0cf54aa949a7a006a4bf298385a8a31f2b74883cdf472a3c6f5
+decryption key: K3st1b541fvB8Svxi33KhJ
+
+asset_id2: 3d5c674aff66336850a8874d95304c08d84a926415c9ffdf165544a847bf9640
+updated: 69fb1ba23c36685a560838475e6e079dbbcae6fb9aa67b95e9ff624ef27c518b
+
+
+Patient1
+decryption key:- JQaodNMqkDKhYUoyFFJidf
+pub_key:- 2rcJyrKpKihCccFAVruEVuaY5TtMQ3kGz3vFdLsN6sfm
+priv_key: 4D5rctJ8MWLZqEg6WxnMC2xUDErsUGYSS5VeGTSGLREo
+
+asset_id1: c738bc1aeadac503a86c4d468e05768ffa511930ee95912ec814fc841e7b81f7
+shared_asset_id1 with doctor1: 2fd98e009aad4f48afee01d5e653eb46d2381235bc0974fd1316d70e5f5a780d
+modified_asset_id1: 1ade2d1248fc04229a5fad51cd2bafbe2b69172e709640e8860b5a8fdb1a5c97
+
+
+asset_id2: 160e3aa2c5801e175aeca330c1b8f915e382d1fd8b3fcb4295891c23b8a0f87d
+shared_asset_id 2: 81bb4982a5bcecc18e71ada7daeb24e4b68196d68e13a3a54c253387ca313b78
+modified_asset_id2: beb394e7bf3de6e711b7992f283b3aba07f6d8366d085409cdda06bed26780cd
+
+
+doctor1:
+asset_id1: d478d32a48c44b4f0e1e46712951a7907616c95da7dc3de14d63e14d760d904a
+pub_key:- LR76FnPP1dyu8TMWsEK3UdQXEVVdWDN1j4yLp9Lc4GM
+priv_key:6V5Marm34hBs1sm3x9UMUQ8jq4Bqn4Vd6ZmFxks8bHPd
+decryption_key:- V2R23PzHJyFEcQkeuu5hUn
+04a18fb0787418e43cd366b5966b7c9c28763b63d3927d4b1e5a1182893e3de3
+m: b0472eb9b5ac2a7a2b65a6f5a626a02d3b86cbb76d66398b1932f9e9fa4c7283
+doctor2:
+pub_key: 9K1tBqnj7X2bVEjGxBZ6M99YCD51XQQMXWaZW2ZuCQkW
+decryption_key: WTbFxrXvjwMWtiRfQkzUCQ
+
+################################################################################################################
+patient1: 
+asset_id: e220f77960f547b8a06096a3f41e74d59dcbd461cb51aefcee6b2b2f93b41868
+
+8d5d133e4e4f7d47db3507feb49dc2d661580328aaa995cf31f37b855db61185
+fe373fc784f8f29a3d1edd98ff79834c24f998786ef4e76d8e18f2e65667157f shared
+FLMn1P4gTV7CpAM7Qi7QYq deckey
+
+
+bc4f6e0b8752997ba5e893998d40501e043731f35a24590e8da24c48614f22ce shared key asset
+
+
+

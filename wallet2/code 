@@ -1,0 +1,171 @@
+18f9027416a7ba68f7c0a46bc81818308b1767a59944d57aef0fd40c8e130bbe  3-asset_id of sai.pdml
+
+ac6543a4d42d30363436a0c65aeb31eb1e6b4b726fb092145568bec7228e06bf asset_id of sai
+c772c3ebba0723e73331f1c78084fd96077b08208f59758cbe034aa865977e78 asset_id of kd
+f820a2b1149130ee095aabc8e35b64f0c207ec4e4feb2414ced3f95f8ab902f5  transfer id from kd to lucky
+
+e9a1a961319f4c6899e8140853e625b1dfb5c4938814b24f5dd778640e1b9148 new assets of KD
+022bd878dda5c0f29343b01205786f7b4058fedc215932bb824a8d594a5988ad 2nd asset of kd
+
+
+c2a4ddc69e8bc43c8a62831bb5b2058602f0a855175ed3b1b405770c5db62bf4 asset_id for test1
+
+
+def transfer_asset(self,asset_id,pk_new_owner):
+        print("In transfer asset")
+       # print(asset_id, pk_new_owner)
+        output_index = 0
+        out= self.retrieve_txn(asset_id)
+        #print(out)
+        output= out['outputs'][output_index]
+        transfer_input = {
+                          'fulfillment': output['condition']['details'],
+                          'fulfills': {
+                                       'output_index': output_index,
+                                       'transaction_id': out['id']
+                                      },
+                          'owners_before': output['public_keys']
+                         }
+        print(transfer_input)
+        transfer_asset = {
+                          'id': asset_id
+                         }
+        print('\n',transfer_asset)
+        #transfer_asset= self.retrieve_asset(asset_id)
+        prepared_transfer_tx = self.bigchaindb_driver.transactions.prepare(
+                                                        operation='TRANSFER',
+                                                        asset=transfer_asset,
+                                                        inputs=transfer_input,
+                                                        recipients=pk_new_owner,
+                                                       )
+        print('\n',prepared_transfer_tx)
+        fulfilled_transfer_tx = self.bigchaindb_driver.transactions.fulfill(
+                                                         prepared_transfer_tx,
+                                                         private_keys=self.private_key,
+                                                        )
+        print('\n',fulfilled_transfer_tx)
+        sent_transfer_tx = self.bigchaindb_driver.transactions.send(fulfilled_transfer_tx)
+        print('\n',sent_transfer_tx)
+        tx_retrieve= self.bigchaindb_driver.transactions.retrieve(asset_id)
+        print(tx_retrieve)
+        print("New owner: ?",
+        sent_transfer_tx['outputs'][0]['public_keys'][0] == pk_new_owner)
+
+        print("previous owner: ",
+        fulfilled_transfer_tx['inputs'][0]['owners_before'][0] == self.public_key)
+    
+        
+
+if typeofOp.lower() == "transfer":
+         asset_id= input("Enter txlink: \n")
+         new_user= input("Transfer to: ")
+         pk_new_user= w.get_public_key(new_user)
+         transfered_id= u.transfer_data(asset_id, pk_new_user)
+         print(u.retrieve_asset(tx['id']))         
+      
+
+
+      if typeofOp.lower() == "transfer":
+         asset_id= input("Enter the asset_id to be Updated: \n")
+         new_user= input("Transfer to: ")
+         pk_new_user= w.get_public_key(new_user)
+         transfered_id= u.transfer_asset(asset_id, pk_new_user)
+         tx= u.retrieve_txn(transfered_id)
+         print(tx['id'])
+         print(u.retrieve_asset(tx['id']))  
+
+
+
+for txlnk in u.get_owned_ids():
+            print(u.retrieve_txn(txlnk.txid))
+         transfer_id = random.choice(u.get_owned_ids())
+         new_user= input("Transfer to: ")
+         pk_new_user= w.get_public_key(new_user)
+         print("\n")
+         u.transfer_data(transfer_id,pk_new_user)
+
+
+def transfer_asset(self,asset_id,pk_new_owner):
+        print("In transfer asset")
+       # print(asset_id, pk_new_owner)
+        output_index = 0
+        out= self.retrieve_txn(asset_id)
+        #print(out)
+        output= out['outputs'][output_index]
+        transfer_input = {
+                          'fulfillment': output['condition']['details'],
+                          'fulfills': {
+                                       'output_index': output_index,
+                                       'transaction_id': out['id']
+                                      },
+                          'owners_before': output['public_keys']
+                         }
+        print(transfer_input)
+        tx = self.retrieve_txn(asset_id)
+        asset= tx['asset']
+        print('\n',asset)
+        prepared_transfer_tx = self.bigchaindb_driver.transactions.prepare(
+                                                        operation='TRANSFER',
+                                                        asset=asset,
+                                                        inputs=transfer_input,
+                                                        recipients=pk_new_owner,
+                                                       )
+        print('\n',prepared_transfer_tx)
+        fulfilled_transfer_tx = self.bigchaindb_driver.transactions.fulfill(
+                                                         prepared_transfer_tx,
+                                                         private_keys=self.private_key,
+                                                        )
+        print('\n',fulfilled_transfer_tx)
+        sent_transfer_tx = self.bigchaindb_driver.transactions.send(fulfilled_transfer_tx)
+        print('\n',sent_transfer_tx)
+        tx_retrieve= self.bigchaindb_driver.transactions.retrieve(asset_id)
+        print(tx_retrieve)
+        print("New owner: ?",
+        sent_transfer_tx['outputs'][0]['public_keys'][0] == pk_new_owner)
+
+        print("previous owner: ",
+        fulfilled_transfer_tx['inputs'][0]['owners_before'][0] == self.public_key)
+    
+        
+    
+    def transfer_data(self, tx_link, new_owner):
+        '''
+        Transfer the transaction output linked to in the given tx_link parameter to the new
+        owner whose public key is provided as new_owner parameter  
+        '''
+        if not isinstance(tx_link, TransactionLink):
+            raise ValueError('tx_link expected to be a TransactionLink object')
+        # retrieve the transaction and the associated condition
+        tx = self.retrieve_txn(tx_link.txid)
+        print(tx)
+        print("\n")
+        tx1= self.retrieve_asset(tx_link.txid)
+        print(tx1)
+        # TODO: check the ownership of the retrieve transaction to avoid
+        #     the addition of invalid transactions
+        condition = tx['transaction']['conditions'][tx_link.cid]
+        
+        # first create the input
+        input_ = {
+                  'fulfillment': condition['condition']['details'],
+                  'input': {
+                            'cid':tx_link.cid,
+                            'txid': tx_link.txid,
+                           },
+                  'owners_before': condition['owners_after'],                 
+                 }
+        # next acquire the asset
+        asset = tx['transaction']['asset']
+        # lastly specify the new owners
+        owners_after = new_owner
+        
+        # now transfer the output
+        #transfer_tx = self.bigchaindb_driver.transactions.prepare(operation='TRANSFER',
+        #                                inputs=input_, asset=asset, owners_after=owners_after)
+        #signed_transfer_tx = self.bigchaindb_driver.transactions.fulfill(transfer_tx,
+#                                                                         self.private_key)
+        #self.bigchaindb_driver.transactions.send(signed_transfer_tx)
+          
+               
+       
+

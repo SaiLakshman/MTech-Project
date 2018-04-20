@@ -1,0 +1,137 @@
+    def update_access(self, asset_id = None,allowed_keys= None,pk_updated_user= None):
+        '''
+        To update the allowed_keys for the asset.
+        We only allow modification of the allowed_keys to change the access control for the asset.
+        Parameters
+            asset_id: id of the asset to whose access has to be updated 
+            allowed_keys: a list of public keys who are allowed access to the asset. 
+        
+        Returns
+            transaction_id: id of the transaction that updated the access 
+        '''
+        print("In update access: ")
+       
+        out= self.retrieve_txn(asset_id)
+        allowed_keys= out['metadata']['allowed_keys']
+        allowed_keys.append(pk_updated_user)
+        description=''
+        metadata= Metadata(allowed_keys= allowed_keys,data= description,type= Metadata.CHANGE).to_dict()
+        print("\nMetadata of the transaction: ",metadata)
+        transfer_asset= self.retrieve_txn(asset_id)
+        print("\nTransfer_asset after: ",transfer_asset)
+        fulfilled_creation_tx= self.bigchaindb_driver.transactions.retrieve(asset_id)
+       # print("\n fullfilled transaction: ",fulfilled_creation_tx)
+        output_index = 0
+        output = fulfilled_creation_tx['outputs'][output_index]
+        transfer_input = {
+                          'fulfillment': output['condition']['details'],
+                          'fulfills': {
+                                       'output_index': output_index,
+                                       'transaction_id': fulfilled_creation_tx['id']
+                                      },
+                          'owners_before': output['public_keys']
+                         }
+        #print("TI: ",output)
+       # description= ''
+       # metadata= Metadata(allowed_keys= pk_new_owner,data= description,type= Metadata.TRANSFER).to_dict()
+
+        prepared_transfer_tx = self.bigchaindb_driver.transactions.prepare(
+                                        operation='TRANSFER',
+                                        asset=transfer_asset,
+                                        inputs=transfer_input,
+                                        recipients=self.public_key,
+                                        metadata= metadata,
+                               )
+        print("\nPrepared Transaction: ",prepared_transfer_tx)
+        fulfilled_transfer_tx = self.bigchaindb_driver.transactions.fulfill(
+                                        prepared_transfer_tx,
+                                        private_keys=self.private_key,
+                               )
+        print("\nFulfilled Transaction: ", fulfilled_transfer_tx)
+
+        sent_transfer_tx = self.bigchaindb_driver.transactions.send(fulfilled_transfer_tx)
+        print("\nSent Transaction: ",sent_transfer_tx)
+        
+        print(fulfilled_transfer_tx == sent_transfer_tx)
+           
+
+        return(prepared_transfer_tx['id'])
+        #output_index = 0
+        #out= self.retrieve_txn(asset_id)
+        #output= out['outputs'][output_index]
+        #transfer_input = {
+        #                  'fulfillment': output['condition']['details'],
+        #                  'fulfills': {
+        #                               'output_index': output_index,
+        #                               'transaction_id': out['id']
+        #                              },
+        #                  'owners_before': output['public_keys']
+        #                 }
+        #transfer_asset = {
+        #                  'id': asset_id
+        #                 }
+        #transfer_asset= self.retrieve_asset(asset_id)
+        #prepared_transfer_tx = self.bigchaindb_driver.transactions.prepare(
+        #                                                operation='TRANSFER',
+        #                                                asset=transfer_asset,
+        #                                                inputs=transfer_input,
+        #                                                recipients=pk_updated_user,
+        #                                               )
+        #print(prepared_transfer_tx)
+        #fulfilled_transfer_tx = self.bigchaindb_driver.transactions.fulfill(
+        #                                                 prepared_transfer_tx,
+        #                                                 private_keys=self.private_key,
+        #                                                )
+        #sent_transfer_tx = self.bigchaindb_driver.transactions.send(fulfilled_transfer_tx)
+        #print(sent_transfer_tx)
+        #print("New owner= sai.pdml?",
+        #sent_transfer_tx['outputs'][0]['public_keys'][0] == pk_updated_user)
+
+        #print("previous owner= lucky?",
+        #fulfilled_transfer_tx['inputs'][0]['owners_before'][0] == self.public_key)
+    
+    def transfer_asset(self,asset_id= None, pk_new_owner= None):
+        print("In transfer asset with values ", asset_id, pk_new_owner)
+        print("Old Owner PubKey: ",self.public_key)
+        print("New Owner PubKey: ", pk_new_owner)
+        #transfer_asset = {
+        #                  'id': asset_id
+        #                 }
+        transfer_asset= self.retrieve_txn(asset_id)
+        print("TEA: ",transfer_asset)
+       # print("Ta:- ", transfer_asset)
+        fulfilled_creation_tx= self.bigchaindb_driver.transactions.retrieve(asset_id)
+        print("FUC: ",fulfilled_creation_tx)
+        output_index = 0
+        output = fulfilled_creation_tx['outputs'][output_index]
+        transfer_input = {
+                          'fulfillment': output['condition']['details'],
+                          'fulfills': {
+                                       'output_index': output_index,
+                                       'transaction_id': fulfilled_creation_tx['id']
+                                      },
+                          'owners_before': output['public_keys']
+                         }
+        #print("TI: ",output)
+        description= ''
+        metadata= Metadata(allowed_keys= pk_new_owner,data= description,type= Metadata.TRANSFER).to_dict()
+
+        asset= transfer_asset
+        print("ass: ",asset)
+        prepared_transfer_tx = self.bigchaindb_driver.transactions.prepare(
+                                        operation='TRANSFER',
+                                        asset=transfer_asset,
+                                        inputs=transfer_input,
+                                        recipients=pk_new_owner,
+                                        metadata= metadata,
+                               )
+        print("PeT: ",prepared_transfer_tx['asset'])
+        fulfilled_transfer_tx = self.bigchaindb_driver.transactions.fulfill(
+                                        prepared_transfer_tx,
+                                        private_keys=self.private_key,
+                               )
+        #print("FT: ", fulfilled_transfer_tx)
+
+        sent_transfer_tx = self.bigchaindb_driver.transactions.send(fulfilled_transfer_tx)
+        print("SeT: ",prepared_transfer_tx)
+        return(prepared_transfer_tx['id'])
